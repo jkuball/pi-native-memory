@@ -74,9 +74,9 @@ The exact workflow and naming may change.
 
 ### Checkpoint
 
-Currently means a cheap markdown marker in session-local storage.
+A parked idea, not part of the current core plan.
 
-It does not necessarily mean an LLM-generated summary.
+If it ever returns, it should mean a cheap markdown marker in session-local storage, not an LLM-generated summary or a second session log.
 
 ### Stable note ID
 

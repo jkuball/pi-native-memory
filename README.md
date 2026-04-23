@@ -77,7 +77,10 @@ Where this project differs:
 ## Docs
 
 - `docs/plan.md`
+- `docs/phase-1-spec.md`
 - `docs/storage-and-loading.md`
 - `docs/linking.md`
+- `docs/memory-vs-agents.md`
+- `docs/philosophy.md`
 - `docs/nomenclature.md`
 - `docs/to-be-discussed.md`

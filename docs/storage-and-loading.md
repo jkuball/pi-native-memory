@@ -21,7 +21,7 @@ This keeps the vault:
     <slug>/
       <session-id>/
         scratchpad.md
-        checkpoints.md
+        # checkpoints.md is reserved for later if a real need appears
 
   slugs/
     <slug>/
@@ -62,32 +62,6 @@ Properties:
 
 This is the main automatically loaded scope.
 
-## `sessions/<slug>/<session-id>/checkpoints.md`
-
-Append-only markdown log for session-local checkpoints.
-
-A checkpoint is not a required LLM summary. It is just a durable marker that says, at this moment, these notes mattered.
-
-Potential checkpoint triggers:
-- explicit checkpoint command
-- before compaction in later phases
-- maybe before future switch or fork flows
-
-A checkpoint entry can stay simple:
-
-```md
-## 2026-04-23 12:31:10
-trigger: manual
-
-### Scratchpad excerpt
-- still deciding whether slug scope should auto-load by default
-- global scope remains explicit only
-
-### Linked notes
-- [[20260423114819-pi-native-memory]]
-```
-
-Phase 1 does not need heavy checkpoint behavior.
 
 ## `slugs/<slug>/memory.md`
 
@@ -135,7 +109,17 @@ Current decision:
 - store them without dashes as 32 lowercase hex characters
 - keep timestamp ordering in the filename instead of the ID itself
 
-Example:
+Minimum valid frontmatter:
+
+```md
+---
+id: 550e8400e29b41d4a716446655440000
+---
+```
+
+Everything else is optional and flow-specific.
+
+Example with additional optional frontmatter:
 
 ```md
 ---
@@ -259,7 +243,6 @@ Never broadly auto injected:
 - global notes
 - inbox files
 - daily logs
-- full checkpoints
 - full slug files
 
 These should be accessed explicitly.

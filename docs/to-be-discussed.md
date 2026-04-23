@@ -26,9 +26,21 @@ Open questions for that future plan file:
 
 ## Links
 
-The note-linking model is still unresolved and is important enough to deserve a focused discussion.
-Potential options:
+The note-linking model is still important enough to deserve a focused discussion.
+Potential options considered so far:
 - relative markdown links
 - wikilinks
 - frontmatter IDs
 - hybrid approaches
+
+## Checkpoints
+
+Checkpointing is currently a parked idea, not part of the core plan.
+
+Why it was parked:
+- risk of becoming a second session log
+- unclear value compared to mutable private scope and pi session history
+- no strong enough Phase 1 use case yet
+
+Question to revisit later:
+- does a real recovery or compaction problem appear that would justify append-only time markers in session-local storage?

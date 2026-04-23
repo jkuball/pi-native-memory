@@ -195,7 +195,7 @@ Current preferred layout:
     <slug>/
       <session-id>/
         scratchpad.md
-        checkpoints.md
+        # checkpoints.md is reserved for later, not part of the current core plan
 
   slugs/
     <slug>/
@@ -228,22 +228,6 @@ Private session workspace.
 
 This is the main automatically loaded scope.
 
-### `sessions/<slug>/<session-id>/checkpoints.md`
-
-Append-only markdown log of session-local checkpoints.
-
-A checkpoint is not a startup summary and not necessarily an LLM-generated summary.
-It is just a durable marker like:
-- before compaction
-- before some explicit manual checkpoint command
-- maybe before a future session switch or fork event
-
-For now, a checkpoint can be as simple as a timestamped markdown section with:
-- trigger
-- copied scratchpad excerpt
-- optional linked note references
-
-Phase 1 does not need heavy automatic checkpointing. This file can stay minimal or even absent until first use.
 
 ### `slugs/<slug>/memory.md`
 
@@ -309,7 +293,7 @@ Mechanism:
 - include path and omitted counts
 
 Open point:
-- whether slug scope should auto-load by default or only when explicitly pinned remains undecided
+- whether slug scope should later gain optional tiny auto-loading or only a presence-only signal remains undecided
 
 ### Cold memory
 
@@ -317,7 +301,6 @@ Never broadly auto injected:
 - global notes
 - inbox files
 - daily files
-- full checkpoints
 - full slug files
 
 Access pattern:
@@ -412,12 +395,19 @@ Include in Phase 1:
 - slug memory skeleton in markdown
 - global cold-storage note layout in markdown
 - stable note identity conventions for global notes
-- note-to-note linking conventions
 - tiny automatic loading based on tail-style excerpts
 - no startup summary LLM call
 - no broad global injection
 - enough commands or tools to inspect the private, slug, and global scopes directly
 - basic manual creation and reading of global notes
+
+Phase 1 does not need full link-resolution workflows.
+It is enough if the agent can create notes and read existing files in a simple file-based way.
+
+Phase 1 should also keep the memory-vs-instruction boundary clean:
+- implement memory scopes
+- do not blur them into `AGENTS.md` or repo-local skills yet
+- leave promotion workflows to later phases
 
 Explicitly keep out of Phase 1:
 - inbox processing workflow
@@ -491,6 +481,7 @@ Possible examples:
 - promotion from slug memory into `AGENTS.md` or repo-local skills
 - companion extensions for capture or inbox workflows
 - richer multimodal flows
+- checkpoint ideas if a real need appears later
 - future compatibility helpers for external tools if they ever prove worth it
 
 ## Current thesis
