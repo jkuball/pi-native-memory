@@ -1,11 +1,10 @@
 # pi-native-memory
 
-A custom memory extension for pi, designed around how I actually use pi.
+A (planned) custom memory extension for pi.
+This repo starts as design-first documentation and will be iterated on in my free time.
 
-The goal is memory in the pi way. There are many memory systems, but this one is mine.
-Small by default, explicit when needed, and aligned with the same strengths that make pi feel fast and useful.
-
-This repo starts as design-first documentation and will be iterated on.
+There are many memory systems, but this one is mine. The Goal is: "Memory, the pi way".
+Small by default, explicit when needed, and aligned with the same strengths that pi excells at.
 
 ## Why this exists
 
