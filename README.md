@@ -82,4 +82,5 @@ Where this project differs:
 - `docs/memory-vs-agents.md`
 - `docs/philosophy.md`
 - `docs/nomenclature.md`
+- `docs/capture.md`
 - `docs/to-be-discussed.md`
