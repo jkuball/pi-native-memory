@@ -111,7 +111,7 @@ Global Zettelkasten notes should be accessed through explicit retrieval.
 
 That means:
 - no broad automatic global injection
-- provide a skill or workflow for how to use global notes
+- provide a skill or workflow for how to use cold-memory notes
 - that skill can cover frontmatter conventions, note links, and `rg`
 
 ### 8. Optimize for driver UX, performance, and simple operation
@@ -129,9 +129,9 @@ This must not become slop.
 
 ## Scope model
 
-### Private scope
+### Hot memory (private scope)
 
-Private scope is the session-local workspace.
+Hot memory is the session-local workspace.
 
 What belongs here:
 - temporary notes
@@ -139,13 +139,13 @@ What belongs here:
 - near-term reminders
 - session-specific context that should survive resume
 
-The private scope belongs to the session, not the branch, at least for now.
+Hot memory belongs to the session, not the branch, at least for now.
 
 This is an explicit ASAP simplicity choice.
 
-### Slug scope
+### Warm memory (slug scope)
 
-Slug scope is small repo memory.
+Warm memory is small repo memory.
 
 What belongs here:
 - repo-specific preferences
@@ -160,15 +160,15 @@ It should not live in the repo by default.
 Important distinction from `AGENTS.md` and repo-local skills:
 - `AGENTS.md` is published instruction context that pi loads as part of its context-file convention
 - repo-local skills are curated capability or workflow artifacts
-- slug scope is a lightweight draft layer for small repo memory and gotchas
+- warm memory is a lightweight draft layer for small repo memory and gotchas
 
 A useful future flow is:
-- capture small repo memory in slug scope first
+- capture small repo memory in warm memory first
 - promote stable or important parts into `AGENTS.md` or repo-local skills later
 
-### Global scope
+### Cold memory (global scope)
 
-Global scope is the durable note graph.
+Cold memory is the durable note graph.
 
 What belongs here:
 - long-lived workstreams
@@ -269,12 +269,12 @@ This is the cheap dumping ground for things that should not leak into current se
 
 ## Loading and retrieval model
 
-Use a hot, lukewarm, and cold model.
+Use a hot, warm, and cold model.
 
 ### Hot memory
 
 Automatically loaded:
-- private scope only
+- hot memory only (the session-local scratchpad)
 
 Mechanism:
 - no LLM summarization step
@@ -282,26 +282,26 @@ Mechanism:
 - include the file path and omitted line count
 - the agent can load more if needed
 
-### Lukewarm memory
+### Warm memory
 
 Possibly lightly loaded:
-- slug scope
+- warm memory (slug scope)
 
 Mechanism:
-- same primitive as private scope if auto-loading is enabled
+- same primitive as hot memory if auto-loading is enabled
 - small tail-style excerpt only
 - include path and omitted counts
 
 Open point:
-- whether slug scope should later gain optional tiny auto-loading or only a presence-only signal remains undecided
+- whether warm memory should later gain optional tiny auto-loading or only a presence-only signal remains undecided
 
 ### Cold memory
 
 Never broadly auto injected:
-- global notes
+- cold-memory notes
 - inbox files
 - daily files
-- full slug files
+- full warm-memory files
 
 Access pattern:
 - explicit read
@@ -394,12 +394,12 @@ Include in Phase 1:
 - private session scratchpad in markdown
 - slug memory skeleton in markdown
 - global cold-storage note layout in markdown
-- stable note identity conventions for global notes
+- stable note identity conventions for cold-memory notes
 - tiny automatic loading based on tail-style excerpts
 - no startup summary LLM call
 - no broad global injection
-- enough commands or tools to inspect the private, slug, and global scopes directly
-- basic manual creation and reading of global notes
+- a documented agent workflow, likely via skills plus existing file and shell tools, to inspect the private, slug, and global scopes directly
+- basic manual creation and reading of cold-memory notes
 
 Phase 1 does not need full link-resolution workflows.
 It is enough if the agent can create notes and read existing files in a simple file-based way.
@@ -418,6 +418,21 @@ Explicitly keep out of Phase 1:
 - any dependency beyond what pi already ships with and what the user prefers to use externally
 - backlink engines, sqlite indexes, or other attempts to reimplement a full PKM application
 
+## Phase 1 decisions currently locked
+
+These decisions are settled enough to build against.
+
+- slug derivation should do exactly what pi already does for cwd-based session behavior
+- hot-memory identity should use pi's own session identity
+- `pi --continue` and `pi --resume` should reuse the same private scratchpad
+- `pi --fork` should start with an inherited copy of the parent's private scratchpad, then diverge independently
+- private hot-memory injection should happen at session startup only in Phase 1
+- automatic loading should use a tail-style excerpt from hot memory
+- Phase 1 does not need new memory-specific primitives if the agent already has generic file and shell tools
+- the Phase 1 agent workflow can be taught through skills that explain the storage layout and file conventions
+- hot and warm memory are mainly for short working references into colder memory, not for accumulating long-form prose
+- colder notes should be easy to pin into hotter scopes by link or note ID, so relevant durable context stays close during active work
+
 ## Phase 1: markdown-first core memory prototype
 
 Build the smallest useful version with the Phase 1 boundary above.
@@ -425,7 +440,7 @@ Build the smallest useful version with the Phase 1 boundary above.
 Success criteria:
 - quick close and reopen with `pi --continue` retains useful private state
 - parallel sessions do not bleed into each other
-- global cold storage exists structurally and is usable manually
+- cold memory exists structurally and is usable manually
 - default context stays very small
 - vault remains easy to inspect in Obsidian, git, and shell tools
 
@@ -435,6 +450,7 @@ Phase 2 should make the system pleasant to use.
 
 Include in Phase 2:
 - better driver-facing commands and workflows
+- explicit memory-reading UX such as `/readmem hot`, `/readmem warm`, and maybe a picker-backed `/readmem cold`
 - global Zettelkasten note creation and promotion flow
 - daily trace updates
 - optional session references in frontmatter
@@ -461,7 +477,7 @@ Success criteria:
 
 Add:
 - explicit and maybe automatic checkpoints in markdown if they prove worthwhile
-- compaction-aware private scope preservation
+- compaction-aware hot-memory preservation
 - cleanup helpers for stale references and vault hygiene
 - programmatic housekeeping tools that can run without LLM involvement
 - better traversability for shell tools and small local models

@@ -66,13 +66,14 @@ It is the place where loose recurring facts and gotchas accumulate before they b
 ## Promotion paths
 
 Useful long-term promotion paths may look like:
-- private scope -> slug memory
-- private scope -> global note
-- slug memory -> `AGENTS.md`
-- slug memory -> repo-local skill
-- global note -> distilled instruction artifact
+- hot memory -> warm memory
+- hot memory -> cold-memory note
+- warm memory -> `AGENTS.md`
+- warm memory -> repo-local skill
+- cold-memory note -> distilled instruction artifact
 
 Promotion should usually be explicit or at least reviewable.
+The promotion workflow itself may later be packaged as a skill.
 
 ## What should auto-load versus stay retrievable
 
@@ -86,15 +87,15 @@ These belong closer to pi's instruction surfaces:
 ### Retrievable, not broadly auto-loaded
 
 These belong in memory surfaces:
-- slug memory
-- global notes
+- warm memory
+- cold-memory notes
 - inbox content
 - daily traces
 - old checkpoints
 
 ### Session hot memory
 
-Private session scope is the special case.
+Hot session memory is the special case.
 
 It is still memory, not instruction, but a tiny excerpt may be auto-loaded because it represents the current local working surface.
 

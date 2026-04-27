@@ -35,13 +35,13 @@ Properties:
 - long-lived
 - not automatically injected into context
 
-### Hot, lukewarm, and cold memory
+### Hot, warm, and cold memory
 
 A loading metaphor.
 
-- **hot** = automatically loaded private scope
-- **lukewarm** = maybe lightly loaded slug scope
-- **cold** = global notes, inbox, daily files, full checkpoints, and other explicitly accessed material
+- **hot** = automatically loaded session-local memory
+- **warm** = maybe lightly loaded slug memory
+- **cold** = cold-memory notes, inbox, daily files, full checkpoints, and other explicitly accessed material
 
 ## Intentionally soft terms
 

@@ -89,9 +89,9 @@ A simple example:
 
 This is useful and does not require a large ingestion subsystem.
 
-## Relationship to cold storage
+## Relationship to cold memory
 
-The inbox is adjacent to cold storage, but it is not itself the durable knowledge graph.
+The inbox is adjacent to cold memory, but it is not itself the durable knowledge graph.
 
 A good mental model is:
 - inbox items are candidate material

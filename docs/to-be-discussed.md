@@ -10,7 +10,7 @@ Why this matters:
 - the project needs a clean explanation of:
   - what belongs in private memory
   - what belongs in slug memory
-  - what belongs in global notes
+  - what belongs in cold-memory notes
   - what belongs in `AGENTS.md`
   - what belongs in repo-local skills
 - the project should likely describe promotion paths such as:
@@ -39,7 +39,7 @@ Checkpointing is currently a parked idea, not part of the core plan.
 
 Why it was parked:
 - risk of becoming a second session log
-- unclear value compared to mutable private scope and pi session history
+- unclear value compared to mutable hot memory and pi session history
 - no strong enough Phase 1 use case yet
 
 Question to revisit later:

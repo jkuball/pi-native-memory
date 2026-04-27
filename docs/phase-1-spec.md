@@ -5,9 +5,9 @@
 Phase 1 proves the core shape of pi-native-memory.
 
 It should be the smallest implementation that demonstrates:
-- private session memory
-- slug-scoped repo memory
-- global cold storage as markdown notes
+- hot session memory
+- warm repo memory
+- cold memory as markdown notes
 - tiny automatic loading
 - zero LLM dependency for core loading behavior
 
@@ -74,6 +74,7 @@ Contract:
 - isolated from parallel sessions
 - reused when the same session is resumed or continued
 - not shared with other sessions in the same slug
+- a forked session starts with an inherited copy of the parent's scratchpad, then diverges independently
 
 This file is the only scope automatically loaded in Phase 1.
 
@@ -96,7 +97,7 @@ Phase 1 decision:
 - it is not automatically loaded by default
 - lightweight presence signaling can be revisited after Phase 1 if it proves useful
 
-### 3. Global cold storage
+### 3. Cold memory
 
 Files:
 ```text
@@ -110,6 +111,9 @@ Contract:
 - the `id` is UUIDv4-derived, lowercase, and dashless
 - the `id` is not derived from the title
 - the filename provides timestamp ordering and a small human hint
+- the timestamp format should be `YYYYMMDDHHMMSS`
+- the timestamp should use local time
+- if no better hint exists, `untitled` is fine
 
 ### Required note frontmatter
 
@@ -144,7 +148,7 @@ Phase 1 must support:
 - reading `memory.md`
 - updating `memory.md`
 - sharing this file across sessions in the same slug
-- keeping it separate from private scope
+- keeping it separate from hot memory
 
 ### Global note behavior
 
@@ -154,6 +158,9 @@ Phase 1 must support:
 - reading an existing note by path
 - updating an existing note by path
 
+A new note may consist of only frontmatter.
+An H1 matching the title is allowed, but not required.
+
 Phase 1 does not need note-opening by ID or full link-resolution workflows.
 Simple file-based creation and reading is enough.
 
@@ -161,29 +168,30 @@ Simple file-based creation and reading is enough.
 
 ### What auto-loads
 
-Only private scope auto-loads in Phase 1.
+Only hot memory auto-loads in Phase 1.
+The Phase 1 auto-load happens at session startup.
 
 ### What does not auto-load
 
 Phase 1 must not auto-load:
-- slug scope
-- global notes
+- warm memory
+- cold-memory notes
 - daily files
 - inbox files
 - reserved checkpoint files
 
-### Private scope loading format
+### Hot-memory loading format
 
 Automatic loading must:
 - use pure file I/O only
 - perform no LLM summarization
-- read a tail-style excerpt from `scratchpad.md`
+- read a tail-style excerpt from the hot-memory `scratchpad.md`
 - include the file path
 - include omitted-line information when truncation happens
 
 ### Phase 1 loading budget
 
-Default private-scope auto-load budget:
+Default starting budget for hot-memory auto-load:
 - last **12 lines**
 - up to **1200 characters**
 
@@ -195,24 +203,29 @@ Private scope from `/path/to/scratchpad.md`
 Showing last 12 of 41 lines.
 ```
 
-These numbers are part of the Phase 1 contract unless changed intentionally.
+These are the initial Phase 1 defaults.
+If implementation experience shows that slightly different limits work better, they can be adjusted intentionally.
 
-## Commands or tools required
+## Agent interface required
 
-Exact names are not fixed yet.
+Phase 1 does not need new memory-specific primitives if the agent already has generic file and shell tools.
 Behavior matters more than naming in Phase 1.
 
-Phase 1 must provide enough commands or tools to:
-- inspect private scope
-- inspect slug scope
-- inspect a global note by file path
+Phase 1 must provide a documented workflow, such as through skills, that tells the agent how to:
+- inspect hot memory
+- inspect warm memory
+- inspect a cold-memory note by file path
 - create a new global note manually
+- pin a link or note ID from cold memory into hot or warm memory when that helps the current work
+
+This may be implemented entirely with existing read, write, edit, and shell capabilities.
 
 Phase 1 does not need:
 - capture commands
 - inbox processing commands
 - promotion commands
 - link-resolution commands
+- dedicated memory-specific slash commands
 
 ## Explicitly out of scope
 
@@ -249,7 +262,7 @@ then each session must only see its own `scratchpad.md`.
 
 Given a session with an existing `scratchpad.md`,
 when the same session is resumed or continued,
-then its private scope must be restored from that same file.
+then its hot memory must be restored from that same file.
 
 ### Test 3: slug persistence
 
@@ -269,10 +282,10 @@ then the note file must:
 
 ### Test 5: tiny default context
 
-Given a long private scratchpad,
+Given a long hot-memory scratchpad,
 when Phase 1 auto-load runs,
-then only the configured private tail excerpt must be injected.
-Slug and global scopes must remain unloaded by default.
+then only the configured hot-memory tail excerpt must be injected.
+Warm and cold memory must remain unloaded by default.
 
 ### Test 6: shell and editor readability
 
@@ -287,6 +300,6 @@ No special database or index must be required.
 ## Open points still allowed in Phase 1
 
 Only these points are still intentionally soft:
-- final command names
-- whether slug scope later gets optional tiny auto-loading behind a flag or a presence-only signal
+- final skill and command names
+- whether warm memory later gets optional tiny auto-loading behind a flag or a presence-only signal
 - exact note template text beyond the minimum required frontmatter

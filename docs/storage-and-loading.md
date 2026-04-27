@@ -57,6 +57,7 @@ Contents:
 Properties:
 - survives `pi --continue`
 - survives `pi --resume` when reopening the same session
+- a forked session starts with an inherited copy, then diverges independently
 - survives compaction and `/tree`
 - never leaks into parallel sessions
 
@@ -206,7 +207,7 @@ Use three temperatures.
 
 ## Hot
 
-Auto-loaded every turn:
+Auto-loaded at session startup:
 - private session scratchpad excerpt
 
 Mechanism:
@@ -224,15 +225,15 @@ Showing last 12 of 41 lines.
 ...tail excerpt...
 ```
 
-## Lukewarm
+## Warm
 
 Maybe lightly loaded:
 - slug memory excerpt
 
 Mechanism:
-- same tail-style excerpt model as private scope
+- same tail-style excerpt model as hot memory
 - same no-LLM rule
-- probably smaller than private scope
+- probably smaller than hot memory
 
 This remains a policy choice.
 Current bias: keep it opt-in or very strict.
@@ -240,7 +241,7 @@ Current bias: keep it opt-in or very strict.
 ## Cold
 
 Never broadly auto injected:
-- global notes
+- cold-memory notes
 - inbox files
 - daily logs
 - full slug files
@@ -256,15 +257,20 @@ Possible mechanisms:
 - use `rg`
 - use a dedicated skill for global note usage
 
+A key pattern here is cross-scope referencing:
+- hot and warm memory should often keep short links or note IDs that point into colder notes
+- hotter scopes are mainly for keeping relevant durable context close at hand during active work
+- this should usually happen by reference, not by copying large cold-note bodies into hotter scopes
+
 ## Explicit scope helpers
 
 A later helper command or tool may be useful for cases like:
-- inject a summary of private scope
-- inject a summary of slug scope
+- inject a summary of hot memory
+- inject a summary of warm memory
 - inject a summary of one note or one file
 
 Important constraint:
-- this is explicit, not part of normal startup or per-turn loading
+- this is explicit, not part of normal startup loading
 
 ## Capture and inbox workflows
 
@@ -284,6 +290,7 @@ Phase notes:
 - Phase 1 does not need capture or inbox workflows implemented yet
 - Phase 2 is the first likely place for them
 - richer multimodal inbox workflows can come later without changing the inbox file away from markdown
+- Phase 2 is also the first likely place for dedicated reader UX such as `/readmem hot`, `/readmem warm`, and maybe a picker-backed `/readmem cold`
 
 ## Session file references
 
